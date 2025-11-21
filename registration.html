@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .message {
+            display: none;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            animation: slideIn 0.3s;
+        }
+        
+        .message.show {
+            display: block;
+        }
+        
+        .success-message {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .error-message {
+            background: #f44336;
+            color: white;
+        }
+        
+        .warning-message {
+            background: #ff9800;
+            color: white;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .qr-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+            text-align: center;
+        }
+        
+        .qr-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        #qrcode {
+            display: inline-block;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .qr-info {
+            margin-top: 15px;
+            color: #666;
+            font-size: 13px;
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.6s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Event Registration</h1>
+        <p class="subtitle">Please fill out the form below to register</p>
+        
+        <form id="registrationForm">
+            <div class="form-group">
+                <label>Full Name <span class="required">*</span></label>
+                <input type="text" id="name" name="name" required placeholder="John Doe">
+            </div>
+            
+            <div class="form-group">
+                <label>Email Address <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required placeholder="john@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label>Phone Number <span class="required">*</span></label>
+                <input type="tel" id="phone" name="phone" required placeholder="+1 (555) 123-4567">
+            </div>
+            
+            <div class="form-group">
+                <label>Organization/Company</label>
+                <input type="text" id="organization" name="organization" placeholder="Optional">
+            </div>
+            
+            <div class="form-group">
+                <label>How did you hear about us?</label>
+                <select id="source" name="source">
+                    <option value="">Select an option</option>
+                    <option value="QR Code">QR Code</option>
+                    <option value="Social Media">Social Media</option>
+                    <option value="Friend/Colleague">Friend/Colleague</option>
+                    <option value="Search Engine">Search Engine</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Additional Comments</label>
+                <textarea id="comments" name="comments" placeholder="Any questions or special requests?"></textarea>
+            </div>
+            
+            <button type="submit" id="submitBtn">Complete Registration</button>
+        </form>
+        
+        <div class="message success-message" id="successMessage">
+            ✓ Registration submitted successfully! We'll be in touch soon.
+        </div>
+        
+        <div class="message error-message" id="errorMessage">
+            ✗ <span id="errorText">Something went wrong. Please try again.</span>
+        </div>
+        
+        <div class="message warning-message" id="warningMessage">
+            ⚠ Please configure the Google Apps Script URL in the code (see instructions).
+        </div>
+        
+        <div class="qr-section">
+            <h3>Share This Registration Page</h3>
+            <div id="qrcode"></div>
+            <p class="qr-info">Scan this QR code to access this registration page</p>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        // ⚠️ IMPORTANT: Replace this with your Google Apps Script Web App URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw-XFhzByjFv2NXUJMRT58enhhlWn7B18Fsyrj2nJKJjKK7InS8qz6uOpZRVahgHc4D/exec';
+        
+        // Generate QR code for current page URL
+        const qrcode = new QRCode(document.getElementById("qrcode"), {
+            text: window.location.href,
+            width: 200,
+            height: 200,
+            colorDark: "#333333",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+        
+        // Hide all messages
+        function hideMessages() {
+            document.querySelectorAll('.message').forEach(msg => {
+                msg.classList.remove('show');
+            });
+        }
+        
+        // Show specific message
+        function showMessage(messageId, text = '') {
+            hideMessages();
+            const msgElement = document.getElementById(messageId);
+            if (text && messageId === 'errorMessage') {
+                document.getElementById('errorText').textContent = text;
+            }
+            msgElement.classList.add('show');
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                msgElement.classList.remove('show');
+            }, 5000);
+        }
+        
+        // Handle form submission
+        document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Check if script URL is configured
+            if (SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                showMessage('warningMessage');
+                return;
+            }
+            
+            // Disable submit button and show loading
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loading"></span>Submitting...';
+            
+            // Collect form data
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                organization: document.getElementById('organization').value,
+                source: document.getElementById('source').value,
+                comments: document.getElementById('comments').value,
+                timestamp: new Date().toISOString()
+            };
+            
+            try {
+                // Send data to Google Sheets via Apps Script
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                // Note: no-cors mode doesn't allow reading response, so we assume success
+                console.log('Form data sent:', formData);
+                showMessage('successMessage');
+                
+                // Reset form
+                this.reset();
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('errorMessage', 'Failed to submit. Please check your connection and try again.');
+            } finally {
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Complete Registration';
+            }
+        });
+    </script>
+</body>
+</html>
