@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 32px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        label {
+            display: block;
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .checkbox-item:hover {
+            border-color: #2a5298;
+            background: #f8f9fa;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30, 60, 114, 0.3);
+        }
+        
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .message {
+            display: none;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            animation: slideIn 0.3s;
+        }
+        
+        .message.show {
+            display: block;
+        }
+        
+        .success-message {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .error-message {
+            background: #f44336;
+            color: white;
+        }
+        
+        .warning-message {
+            background: #ff9800;
+            color: white;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .qr-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+            text-align: center;
+        }
+        
+        .qr-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        #qrcode {
+            display: inline-block;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .qr-info {
+            margin-top: 15px;
+            color: #666;
+            font-size: 13px;
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.6s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .section-title {
+            color: #1e3c72;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sports Registration</h1>
+        <p class="subtitle">Complete the form below to register</p>
+        
+        <form id="registrationForm">
+            <div class="section-title">Player Information</div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Full Name <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" required placeholder="John Doe">
+                </div>
+                
+                <div class="form-group">
+                    <label>Date of Birth <span class="required">*</span></label>
+                    <input type="date" id="dob" name="dob" required>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required placeholder="john@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" required placeholder="(555) 123-4567">
+                </div>
+            </div>
+            
+            <div class="section-title">Guardian Information</div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Guardian's Name <span class="required">*</span></label>
+                    <input type="text" id="guardianName" name="guardianName" required placeholder="Jane Doe">
+                </div>
+                
+                <div class="form-group">
+                    <label>Guardian's Phone <span class="required">*</span></label>
+                    <input type="tel" id="guardianPhone" name="guardianPhone" required placeholder="(555) 987-6543">
+                </div>
+            </div>
+            
+            <div class="section-title">School Information</div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>School <span class="required">*</span></label>
+                    <input type="text" id="school" name="school" required placeholder="Lincoln High School">
+                </div>
+                
+                <div class="form-group">
+                    <label>Grade <span class="required">*</span></label>
+                    <select id="grade" name="grade" required>
+                        <option value="">Select Grade</option>
+                        <option value="6">6th Grade</option>
+                        <option value="7">7th Grade</option>
+                        <option value="8">8th Grade</option>
+                        <option value="9">9th Grade</option>
+                        <option value="10">10th Grade</option>
+                        <option value="11">11th Grade</option>
+                        <option value="12">12th Grade</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="section-title">Position Information</div>
+            
+            <div class="form-group">
+                <label>Offensive Position(s)</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="qb" name="offensive" value="QB">
+                        <label for="qb">QB - Quarterback</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="wr" name="offensive" value="WR">
+                        <label for="wr">WR - Wide Receiver</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="te" name="offensive" value="TE">
+                        <label for="te">TE - Tight End</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="rb" name="offensive" value="RB">
+                        <label for="rb">RB - Running Back</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Defensive Position(s)</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="lb" name="defensive" value="LB">
+                        <label for="lb">LB - Linebacker</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="cb" name="defensive" value="CB">
+                        <label for="cb">CB - Cornerback</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="s" name="defensive" value="S">
+                        <label for="s">S - Safety</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-title">Physical Information</div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Height <span class="required">*</span></label>
+                    <input type="text" id="height" name="height" required placeholder="5'10&quot;">
+                </div>
+                
+                <div class="form-group">
+                    <label>Weight <span class="required">*</span></label>
+                    <input type="text" id="weight" name="weight" required placeholder="150 lbs">
+                </div>
+            </div>
+            
+            <button type="submit" id="submitBtn">Complete Registration</button>
+        </form>
+        
+        <div class="message success-message" id="successMessage">
+            ✓ Registration submitted successfully! We'll be in touch soon.
+        </div>
+        
+        <div class="message error-message" id="errorMessage">
+            ✗ <span id="errorText">Something went wrong. Please try again.</span>
+        </div>
+        
+        <div class="message warning-message" id="warningMessage">
+            ⚠ Please configure the Google Apps Script URL in the code.
+        </div>
+        
+        <div class="qr-section">
+            <h3>Share This Registration</h3>
+            <div id="qrcode"></div>
+            <p class="qr-info">Scan this QR code to access registration</p>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        // ⚠️ IMPORTANT: Replace with your Google Apps Script Web App URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxk_RBLTGgUM4a9GNUU7Ref9ecZv_YdhmBg2GyluhZTkvTN7K66U6gvU53ERmSftYVnxA/exec';
+        
+        // Generate QR code
+        const qrcode = new QRCode(document.getElementById("qrcode"), {
+            text: window.location.href,
+            width: 200,
+            height: 200,
+            colorDark: "#1e3c72",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+        
+        function hideMessages() {
+            document.querySelectorAll('.message').forEach(msg => {
+                msg.classList.remove('show');
+            });
+        }
+        
+        function showMessage(messageId, text = '') {
+            hideMessages();
+            const msgElement = document.getElementById(messageId);
+            if (text && messageId === 'errorMessage') {
+                document.getElementById('errorText').textContent = text;
+            }
+            msgElement.classList.add('show');
+            
+            setTimeout(() => {
+                msgElement.classList.remove('show');
+            }, 5000);
+        }
+        
+        document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                showMessage('warningMessage');
+                return;
+            }
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loading"></span>Submitting...';
+            
+            // Get selected offensive positions
+            const offensivePositions = Array.from(document.querySelectorAll('input[name="offensive"]:checked'))
+                .map(cb => cb.value)
+                .join(', ');
+            
+            // Get selected defensive positions
+            const defensivePositions = Array.from(document.querySelectorAll('input[name="defensive"]:checked'))
+                .map(cb => cb.value)
+                .join(', ');
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                dob: document.getElementById('dob').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                guardianName: document.getElementById('guardianName').value,
+                guardianPhone: document.getElementById('guardianPhone').value,
+                school: document.getElementById('school').value,
+                grade: document.getElementById('grade').value,
+                offensivePositions: offensivePositions,
+                defensivePositions: defensivePositions,
+                height: document.getElementById('height').value,
+                weight: document.getElementById('weight').value,
+                timestamp: new Date().toISOString()
+            };
+            
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                console.log('Form data sent:', formData);
+                showMessage('successMessage');
+                this.reset();
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('errorMessage', 'Failed to submit. Please try again.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Complete Registration';
+            }
+        });
+    </script>
+</body>
+</html>
