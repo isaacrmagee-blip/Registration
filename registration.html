@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Registration</title>
+    <title>Sports Registration</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -25,15 +25,15 @@
             background: white;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 500px;
+            max-width: 600px;
             width: 100%;
             padding: 40px;
         }
         
         h1 {
-            color: #333;
+            color: #1e3c72;
             margin-bottom: 10px;
-            font-size: 28px;
+            font-size: 32px;
             text-align: center;
         }
         
@@ -44,8 +44,19 @@
             font-size: 14px;
         }
         
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
         .form-group {
             margin-bottom: 20px;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
         }
         
         label {
@@ -56,7 +67,7 @@
             font-size: 14px;
         }
         
-        input, select, textarea {
+        input, select {
             width: 100%;
             padding: 12px;
             border: 2px solid #e0e0e0;
@@ -66,25 +77,53 @@
             font-family: inherit;
         }
         
-        input:focus, select:focus, textarea:focus {
+        input:focus, select:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
         }
         
-        textarea {
-            resize: vertical;
-            min-height: 80px;
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .checkbox-item:hover {
+            border-color: #2a5298;
+            background: #f8f9fa;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 500;
         }
         
         button {
             width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 16px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
@@ -93,7 +132,7 @@
         
         button:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 10px 20px rgba(30, 60, 114, 0.3);
         }
         
         button:active:not(:disabled) {
@@ -190,49 +229,147 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        
+        .section-title {
+            color: #1e3c72;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Event Registration</h1>
-        <p class="subtitle">Please fill out the form below to register</p>
+        <h1>Sports Registration</h1>
+        <p class="subtitle">Complete the form below to register</p>
         
         <form id="registrationForm">
+            <div class="section-title">Player Information</div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Full Name <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" required placeholder="John Doe">
+                </div>
+                
+                <div class="form-group">
+                    <label>Date of Birth <span class="required">*</span></label>
+                    <input type="date" id="dob" name="dob" required>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required placeholder="john@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" required placeholder="(555) 123-4567">
+                </div>
+            </div>
+            
+            <div class="section-title">Guardian Information</div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Guardian's Name <span class="required">*</span></label>
+                    <input type="text" id="guardianName" name="guardianName" required placeholder="Jane Doe">
+                </div>
+                
+                <div class="form-group">
+                    <label>Guardian's Phone <span class="required">*</span></label>
+                    <input type="tel" id="guardianPhone" name="guardianPhone" required placeholder="(555) 987-6543">
+                </div>
+            </div>
+            
+            <div class="section-title">School Information</div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>School <span class="required">*</span></label>
+                    <input type="text" id="school" name="school" required placeholder="Lincoln High School">
+                </div>
+                
+                <div class="form-group">
+                    <label>Grade <span class="required">*</span></label>
+                    <select id="grade" name="grade" required>
+                        <option value="">Select Grade</option>
+                        <option value="6">6th Grade</option>
+                        <option value="7">7th Grade</option>
+                        <option value="8">8th Grade</option>
+                        <option value="9">9th Grade</option>
+                        <option value="10">10th Grade</option>
+                        <option value="11">11th Grade</option>
+                        <option value="12">12th Grade</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="section-title">Position Information</div>
+            
             <div class="form-group">
-                <label>Full Name <span class="required">*</span></label>
-                <input type="text" id="name" name="name" required placeholder="John Doe">
+                <label>Offensive Position(s)</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="qb" name="offensive" value="QB">
+                        <label for="qb">QB - Quarterback</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="wr" name="offensive" value="WR">
+                        <label for="wr">WR - Wide Receiver</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="te" name="offensive" value="TE">
+                        <label for="te">TE - Tight End</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="rb" name="offensive" value="RB">
+                        <label for="rb">RB - Running Back</label>
+                    </div>
+                </div>
             </div>
             
             <div class="form-group">
-                <label>Email Address <span class="required">*</span></label>
-                <input type="email" id="email" name="email" required placeholder="john@example.com">
+                <label>Defensive Position(s)</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="lb" name="defensive" value="LB">
+                        <label for="lb">LB - Linebacker</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="cb" name="defensive" value="CB">
+                        <label for="cb">CB - Cornerback</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="s" name="defensive" value="S">
+                        <label for="s">S - Safety</label>
+                    </div>
+                </div>
             </div>
             
-            <div class="form-group">
-                <label>Phone Number <span class="required">*</span></label>
-                <input type="tel" id="phone" name="phone" required placeholder="+1 (555) 123-4567">
-            </div>
+            <div class="section-title">Physical Information</div>
             
-            <div class="form-group">
-                <label>Organization/Company</label>
-                <input type="text" id="organization" name="organization" placeholder="Optional">
-            </div>
-            
-            <div class="form-group">
-                <label>How did you hear about us?</label>
-                <select id="source" name="source">
-                    <option value="">Select an option</option>
-                    <option value="QR Code">QR Code</option>
-                    <option value="Social Media">Social Media</option>
-                    <option value="Friend/Colleague">Friend/Colleague</option>
-                    <option value="Search Engine">Search Engine</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label>Additional Comments</label>
-                <textarea id="comments" name="comments" placeholder="Any questions or special requests?"></textarea>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Height <span class="required">*</span></label>
+                    <input type="text" id="height" name="height" required placeholder="5'10&quot;">
+                </div>
+                
+                <div class="form-group">
+                    <label>Weight <span class="required">*</span></label>
+                    <input type="text" id="weight" name="weight" required placeholder="150 lbs">
+                </div>
             </div>
             
             <button type="submit" id="submitBtn">Complete Registration</button>
@@ -247,39 +384,37 @@
         </div>
         
         <div class="message warning-message" id="warningMessage">
-            ⚠ Please configure the Google Apps Script URL in the code (see instructions).
+            ⚠ Please configure the Google Apps Script URL in the code.
         </div>
         
         <div class="qr-section">
-            <h3>Share This Registration Page</h3>
+            <h3>Share This Registration</h3>
             <div id="qrcode"></div>
-            <p class="qr-info">Scan this QR code to access this registration page</p>
+            <p class="qr-info">Scan this QR code to access registration</p>
         </div>
     </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
-        // ⚠️ IMPORTANT: Replace this with your Google Apps Script Web App URL
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzHUXc4Wi0WgwuQFhF9jf7wFPOddWV16qNOFnEKwxfVizt9tfN4-DY2V-XiX2KvETM4/exec';
+        // ⚠️ IMPORTANT: Replace with your Google Apps Script Web App URL
+        const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
         
-        // Generate QR code for current page URL
+        // Generate QR code
         const qrcode = new QRCode(document.getElementById("qrcode"), {
             text: window.location.href,
             width: 200,
             height: 200,
-            colorDark: "#333333",
+            colorDark: "#1e3c72",
             colorLight: "#ffffff",
             correctLevel: QRCode.CorrectLevel.H
         });
         
-        // Hide all messages
         function hideMessages() {
             document.querySelectorAll('.message').forEach(msg => {
                 msg.classList.remove('show');
             });
         }
         
-        // Show specific message
         function showMessage(messageId, text = '') {
             hideMessages();
             const msgElement = document.getElementById(messageId);
@@ -288,41 +423,51 @@
             }
             msgElement.classList.add('show');
             
-            // Auto-hide after 5 seconds
             setTimeout(() => {
                 msgElement.classList.remove('show');
             }, 5000);
         }
         
-        // Handle form submission
         document.getElementById('registrationForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Check if script URL is configured
-            if (SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+            if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbzHUXc4Wi0WgwuQFhF9jf7wFPOddWV16qNOFnEKwxfVizt9tfN4-DY2V-XiX2KvETM4/exec') {
                 showMessage('warningMessage');
                 return;
             }
             
-            // Disable submit button and show loading
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<span class="loading"></span>Submitting...';
             
-            // Collect form data
+            // Get selected offensive positions
+            const offensivePositions = Array.from(document.querySelectorAll('input[name="offensive"]:checked'))
+                .map(cb => cb.value)
+                .join(', ');
+            
+            // Get selected defensive positions
+            const defensivePositions = Array.from(document.querySelectorAll('input[name="defensive"]:checked'))
+                .map(cb => cb.value)
+                .join(', ');
+            
             const formData = {
                 name: document.getElementById('name').value,
+                dob: document.getElementById('dob').value,
                 email: document.getElementById('email').value,
                 phone: document.getElementById('phone').value,
-                organization: document.getElementById('organization').value,
-                source: document.getElementById('source').value,
-                comments: document.getElementById('comments').value,
+                guardianName: document.getElementById('guardianName').value,
+                guardianPhone: document.getElementById('guardianPhone').value,
+                school: document.getElementById('school').value,
+                grade: document.getElementById('grade').value,
+                offensivePositions: offensivePositions,
+                defensivePositions: defensivePositions,
+                height: document.getElementById('height').value,
+                weight: document.getElementById('weight').value,
                 timestamp: new Date().toISOString()
             };
             
             try {
-                // Send data to Google Sheets via Apps Script
-                const response = await fetch(SCRIPT_URL, {
+                await fetch(SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: {
@@ -331,18 +476,14 @@
                     body: JSON.stringify(formData)
                 });
                 
-                // Note: no-cors mode doesn't allow reading response, so we assume success
                 console.log('Form data sent:', formData);
                 showMessage('successMessage');
-                
-                // Reset form
                 this.reset();
                 
             } catch (error) {
                 console.error('Error:', error);
-                showMessage('errorMessage', 'Failed to submit. Please check your connection and try again.');
+                showMessage('errorMessage', 'Failed to submit. Please try again.');
             } finally {
-                // Re-enable submit button
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = 'Complete Registration';
             }
